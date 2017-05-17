@@ -1,0 +1,8 @@
+[Core]
+Name = OneDriveVersion
+Module = onedrive_version
+
+[Documentation]
+Author = Kevin Jacoby
+Version = 1.0
+Website = https://www.sas.com
