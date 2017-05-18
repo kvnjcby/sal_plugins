@@ -5,10 +5,11 @@ This repository contains Sal dashboard plugins for tracking Microsoft Office, On
 ## Plugins
 ### Microsoft Office
 ![Microsoft Office](images/office.png)
+
 The Microsoft Office plugin tracks the installed version of Microsoft Outlook specifically. All Office applications are likely to be updated in sync, so we track one application version rather than versions for each Office product.
 
-### Microsoft OneNote
-![Microsoft OneNote](images/onenote.png)
+### Microsoft OneDrive
+![Microsoft OneDrive](images/onedrive.png)
 
 ### Skype for Business
 ![Skype for Business](images/skype4b.png)
