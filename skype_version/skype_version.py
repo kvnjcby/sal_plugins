@@ -38,10 +38,13 @@ class SkypeVersion(IPlugin):
             t = loader.get_template(
                 "skype_version/templates/id.html")
 
-        data = InventoryItem.objects.filter(
-            machine__in=machines,
-            application__name="Skype for Business").values(
-                "version").annotate(count=Count("version")).order_by("version")
+        data = InventoryItem.objects.filter(machine__in=machines,
+                                            application__name="Skype for Business") \
+                                    .exclude(application__bundleid__startswith="com.parallels.winapp") \
+                                    .exclude(application__bundleid__startswith="com.vmware.proxyApp") \
+                                    .values("version") \
+                                    .annotate(count=Count("version")) \
+                                    .order_by("version")
 
         c = Context({
             "title": self.get_description(),
@@ -52,8 +55,9 @@ class SkypeVersion(IPlugin):
         return t.render(c)
 
     def filter_machines(self, machines, data):
-        machines = machines.filter(
-            inventoryitem__application__name="Skype for Business",
-            inventoryitem__version=data)
+        machines = machines.filter(inventoryitem__application__name="Skype for Business",
+                                   inventoryitem__version=data) \
+                           .exclude(inventoryitem__application__bundleid__startswith="com.parallels.winapp") \
+                           .exclude(inventoryitem__application__bundleid__startswith="com.vmware.proxyApp")
 
         return machines, "Machines with version {} of Skype for Business".format(data)
