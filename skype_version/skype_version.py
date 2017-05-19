@@ -39,9 +39,8 @@ class SkypeVersion(IPlugin):
                 "sal_plugins/skype_version/templates/id.html")
 
         data = InventoryItem.objects.filter(machine__in=machines,
-                                            application__name="Skype for Business") \
-                                    .exclude(application__bundleid__startswith="com.parallels.winapp") \
-                                    .exclude(application__bundleid__startswith="com.vmware.proxyApp") \
+                                            application__name="Skype for Business",
+                                            application__bundleid__startswith="com.microsoft") \
                                     .values("version") \
                                     .annotate(count=Count("version")) \
                                     .order_by("version")
@@ -56,8 +55,7 @@ class SkypeVersion(IPlugin):
 
     def filter_machines(self, machines, data):
         machines = machines.filter(inventoryitem__application__name="Skype for Business",
-                                   inventoryitem__version=data) \
-                           .exclude(inventoryitem__application__bundleid__startswith="com.parallels.winapp") \
-                           .exclude(inventoryitem__application__bundleid__startswith="com.vmware.proxyApp")
+                                   inventoryitem__version=data,
+                                   inventoryitem__application__bundleid__startswith="com.microsoft")
 
         return machines, "Machines with version {} of Skype for Business".format(data)

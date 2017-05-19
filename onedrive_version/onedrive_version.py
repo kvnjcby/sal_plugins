@@ -39,9 +39,8 @@ class OneDriveVersion(IPlugin):
                 "sal_plugins/onedrive_version/templates/id.html")
 
         data = InventoryItem.objects.filter(machine__in=machines,
-                                            application__name="OneDrive") \
-                                    .exclude(application__bundleid__startswith="com.parallels.winapp") \
-                                    .exclude(application__bundleid__startswith="com.vmware.proxyApp") \
+                                            application__name="OneDrive",
+                                            application__bundleid__startswith="com.microsoft") \
                                     .values("version") \
                                     .annotate(count=Count("version")) \
                                     .order_by("version")
@@ -56,8 +55,7 @@ class OneDriveVersion(IPlugin):
 
     def filter_machines(self, machines, data):
         machines = machines.filter(inventoryitem__application__name="OneDrive",
-                                   inventoryitem__version=data) \
-                           .exclude(inventoryitem__application__bundleid__startswith="com.parallels.winapp") \
-                           .exclude(inventoryitem__application__bundleid__startswith="com.vmware.proxyApp")
+                                   inventoryitem__version=data,
+                                   inventoryitem__application__bundleid__startswith="com.microsoft")
 
         return machines, "Machines with version {} of Microsoft OneDrive".format(data)

@@ -39,9 +39,8 @@ class OfficeVersion(IPlugin):
                 "sal_plugins/office_version/templates/id.html")
 
         data = InventoryItem.objects.filter(machine__in=machines,
-                                            application__name="Microsoft Outlook") \
-                                    .exclude(application__bundleid__startswith="com.parallels.winapp") \
-                                    .exclude(application__bundleid__startswith="com.vmware.proxyApp") \
+                                            application__name="Microsoft Outlook",
+                                            application__bundleid__startswith="com.microsoft") \
                                     .values("version") \
                                     .annotate(count=Count("version")) \
                                     .order_by("version")
@@ -56,8 +55,7 @@ class OfficeVersion(IPlugin):
 
     def filter_machines(self, machines, data):
         machines = machines.filter(inventoryitem__application__name="Microsoft Outlook",
-                                   inventoryitem__version=data) \
-                           .exclude(inventoryitem__application__bundleid__startswith="com.parallels.winapp") \
-                           .exclude(inventoryitem__application__bundleid__startswith="com.vmware.proxyApp")
+                                   inventoryitem__version=data,
+                                   inventoryitem__application__bundleid__startswith="com.microsoft")
 
         return machines, "Machines with version {} of Microsoft Office".format(data)
