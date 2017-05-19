@@ -33,10 +33,10 @@ class OneDriveVersion(IPlugin):
         # or machine_group id to use (mainly for linking to the right search).
         if page == "front":
             t = loader.get_template(
-                "sal_plugins/onedrive_version/templates/front.html")
+                "kvnjcby/onedrive_version/templates/front.html")
         elif page in ("bu_dashboard", "group_dashboard"):
             t = loader.get_template(
-                "sal_plugins/onedrive_version/templates/id.html")
+                "kvnjcby/onedrive_version/templates/id.html")
 
         data = InventoryItem.objects.filter(machine__in=machines,
                                             application__name="OneDrive",
